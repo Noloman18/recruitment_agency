@@ -6,7 +6,6 @@ import com.recruitment.agency.demo.model.Person;
 import com.recruitment.agency.demo.services.CandidateRespository;
 import com.recruitment.agency.demo.services.PersonRepository;
 
-import lombok.Data;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
