@@ -1,9 +1,6 @@
 package com.recruitment.agency.demo;
 
-import com.recruitment.agency.demo.model.Address;
-import com.recruitment.agency.demo.model.ContactDetails;
-import com.recruitment.agency.demo.model.Education;
-import com.recruitment.agency.demo.model.Person;
+import com.recruitment.agency.demo.model.*;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -55,6 +52,10 @@ public class DataGenerator {
         return ChronoUnit.YEARS.between(person.getBirthDate(),LocalDate.now())>20;
     }
 
+    public static LocalDate randomDate(ChronoUnit chronoUnit,int range) {
+        return LocalDate.now().minus(random.nextInt(range),chronoUnit);
+    }
+
     public static List<Education> generateEducation(Person person) {
         long age = ChronoUnit.YEARS.between(person.getBirthDate(),LocalDate.now());
         List<Education> educationList = new ArrayList<>();
@@ -69,6 +70,10 @@ public class DataGenerator {
                 education.setEnrollmentDate(runningDate);
                 runningDate = runningDate.plusYears(1);
                 education.setGraduationDate(runningDate);
+
+                Verification verification = new Verification();
+                verification.setVerified(random.nextBoolean());
+                education.setVerification(verification);
                 educationList.add(education);
             }
         }
@@ -76,25 +81,28 @@ public class DataGenerator {
         return educationList;
     }
 
-    public static List<Education> generateEmploymentHistory(Person person) {
-        long age = ChronoUnit.YEARS.between(person.getBirthDate(),LocalDate.now());
-        List<Education> educationList = new ArrayList<>();
+    public static List<Company> generateCompanyDetails(Candidate candidate) {
+        long age = ChronoUnit.YEARS.between(candidate.getPersonalDetails().getBirthDate(),LocalDate.now());
+        List<Company> companyList = new ArrayList<>();
 
-        if (age>=25) {
-            int qualifications = random.nextInt(4);
-            LocalDate runningDate = LocalDate.now().minusYears(qualifications);
-            for (int i=0;i<qualifications;i++) {
-                Education education = new Education();
-                education.setInstitutionName(selectItemRandomly.apply(INSTITUTION));
-                education.setCategory(selectItemRandomly.apply(TYPE));
-                education.setEnrollmentDate(runningDate);
+        if (age>24) {
+            int previousJobCount = random.nextInt(candidate.getEducation().size()+2);
+            LocalDate runningDate = LocalDate.now().minusYears(previousJobCount);
+            for (int i=0;i<previousJobCount;i++) {
+                Company company = new Company();
+                company.setStartDate(runningDate);
                 runningDate = runningDate.plusYears(1);
-                education.setGraduationDate(runningDate);
-                educationList.add(education);
+                company.setEndDate(runningDate);
+                company.setName(selectItemRandomly.apply(COMPANIES));
+
+                Verification verification = new Verification();
+                verification.setVerified(random.nextBoolean());
+                company.setVerification(verification);
+                companyList.add(company);
             }
         }
 
-        return educationList;
+        return companyList;
     }
 
     public static ContactDetails generateContactDetails(Person person) {

@@ -13,6 +13,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @SpringBootApplication
@@ -40,7 +41,8 @@ public class DemoApplication implements CommandLineRunner {
             Candidate candidate = new Candidate();
             candidate.setPersonalDetails(person);
             candidate.setEducation(DataGenerator.generateEducation(person));
-            candidate.setLastModificationDate(LocalDate.now());
+            candidate.setLastModificationDate(DataGenerator.randomDate(ChronoUnit.DAYS,30));
+            candidate.setWorkHistory(DataGenerator.generateCompanyDetails(candidate));
             candidateRespository.save(candidate);
             log.info("Finished saving candidate: " + person.toString());
         });

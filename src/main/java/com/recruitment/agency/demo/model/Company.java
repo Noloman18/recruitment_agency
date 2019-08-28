@@ -2,10 +2,7 @@ package com.recruitment.agency.demo.model;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
@@ -18,4 +15,6 @@ public class Company {
     private String description;
     private LocalDate startDate;
     private LocalDate endDate;
+    @Embedded
+    private Verification verification;
 }
