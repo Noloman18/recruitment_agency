@@ -1,5 +1,7 @@
 package com.recruitment.agency.demo.factories;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +16,11 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 public class Persistence {
+
+    @Value("#{environment.postgres_user}")
+    private String dataSourceUsername;
+    @Value("#{environment.postgres_password}")
+    private String dataSourcePassword;
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
@@ -34,8 +41,8 @@ public class Persistence {
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("org.postgresql.Driver");
         dataSourceBuilder.url("jdbc:postgresql://localhost:5432/recruitment");
-        dataSourceBuilder.username("postgres");
-        dataSourceBuilder.password("password");
+        dataSourceBuilder.username(dataSourceUsername);
+        dataSourceBuilder.password(dataSourcePassword);
         return dataSourceBuilder.build();
     }
 
@@ -45,6 +52,7 @@ public class Persistence {
                 setProperty("hibernate.hbm2ddl.auto", "create-drop");
                 setProperty("hibernate.show_sql", "true");
                 setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+                setProperty("spring.jpa.hibernate.naming-strategy","org.hibernate.cfg.DefaultComponentSafeNamingStrategy");
             }
         };
     }
