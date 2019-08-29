@@ -22,6 +22,7 @@ public class DataGenerator {
     private final static String[] INSTITUTION = {"Wits","UJ","UP","TUT","UNISA","Curro High","NWU"};
     private final static String[] TYPE = {"Matric","Degree","Diploma","Masters","Honours","Doctorate"};
     private final static String[] COMPANIES = "Absa Group Ltd,Anchor Group Limited,ArcelorMittal SA Limited,AFROCENTRIC INV CORP LTD,ADVTECH LTD,Adaptit Holdings Limited,Adcorp Holdings Limited,ALLIED ELECTRONICS CORP,AECI Limited,Alexander Forbes Group Holdings Ltd,Afrimat Limited,African Oxygen Limited,ANGLO AMERICAN PLC,Adcock Ingram Hldgs Ltd,Anglo American Plat Ltd,ANGLOGOLD ASHANTI LTD,Anheuser Busch Inbev SA,Aspen Pharmacare Hldgs L,Astoria Investments Ltd.,African Rainbow Min Ltd,ASTRAL FOODS LTD,ARGENT INDUSTRIAL LTD,Ascendis Health Ltd,ASHINF,ASHMID,ASHT40,Austro Group Ltd,ASSORE LTD,Attacq Limited,AVI LTD,Alviva Holdings Ltd,Arrowhead Properties A,Brait SE,BARLOWORLD LTD,BHP Group Limited,Bid Corp Ltd,BLUE LABEL TELECOMS LTD,Crypto: 0.01 Bitcoins,British American Tob plc,Bidvest Ltd,Capital&Counties Prop pl,COMPAGNIE FIN RICHEMONT,Calgro M3 Hldgs Ltd,Cons Infrastructure Grp,City Lodge Hotels Ltd,CLOVER INDUSTRIES LTD,Clicks Group Ltd,COMBINED MOTOR HLDGS LTD,CORONATION FUND MNGRS LD,CONDUIT CAPITAL LTD,CURRO HOLDINGS LIMITED,CAPITEC BANK HLDGS LTD,Capital and Regional Plc,CASHBUILD LTD,CSEW40,Capevin Holdings Ltd,Dis-chem Pharmacies Limited,DIVTRX,Delta Property Fund Ltd,DRD Gold Ltd,DISTELL GROUP LTD,Discovery Ltd,DATATEC LTD,EMIRA PROPERTY FUND,EOH HOLDINGS LTD,ETFRHO,EXXARO RESOURCES LTD,FAMOUS BRANDS LTD,Fortress Inc Fund Ltd A,Fortress Inc Fund Ltd B,Finbond Group Ltd,FIRSTRAND LTD,GOLD FIELDS LTD,NEW GOLD ISSUER LTD,Glencore Xstrata plc,GRINDROD LTD,GRAND PARADE INV LTD,GROWTHPOINT PROP LTD,Harmony GM Co Ltd,Hosken Cons Inv Ltd,HUDACO INDUSTRIES LTD,Hulamin Ltd,Hammerson PLC,HOLDSPORT LIMITED,Hyprop Inv Ltd,Investec Australia Prop,International Hotel Group Limited,Impala Platinum Hlgs Ltd,INVESTEC LTD,INVESTEC PLC,INVESTEC PROPERTY FUND L,IMPERIAL HOLDINGS LTD,ITALTILE LTD,Intu Properties plc,INVICTA HOLDINGS LTD,JSE LTD,KAP Industrial Hldgs Ltd,KUMBA IRON ORE LTD,PSG Konsult Limited,Long4Life Ltd,Liberty Holdings Ltd,LEWIS GROUP LTD,Life Healthc Grp Hldgs L,MAPPSG,MAPPSP,Master Drilling Grp Ltd,Mediclinic Internat Ltd,METROFILE HOLDINGS LTD,MIX TELEMATICS LTD,MONDI PLC,MPACT LIMITED,MERAFE RESOURCES LTD,MR PRICE GROUP LTD,MASSMART HOLDINGS LTD,Metair Investments Ltd,Motus Holdings Ltd.,Momentum Met Holdings Ltd,MTN GROUP LTD,Murray & Roberts Hldgs,NEDBANK GROUP LTD,NEW EUROPE PROP INV PLC,NEWFSA,NEWUSD,NFEMOM,NFGOVI,NFILBI,NFSH40,NFSWIX,NFTRCI,New Gold Platinum ETF,NORTHAM PLATINUM LTD,Niveus Investments Ltd,Nampak Ltd,NASPERS LTD -N-,NEPI Rockcastle PLC,NET 1 UEPS TECH INC,NETCARE LIMITED,OCEANA GROUP LTD,OCTODEC INVEST LTD,OLD MUTUAL PLC,OMNIA HOLDINGS LTD,PAN AFRICAN RESOURCE PLC,PIONEER FOODS GROUP LTD,Peregrine Holdings Limit,PIK N PAY STORES LTD,PPC Limited,Steinhoff Africa Retail Ltd,PSG Group Ltd,PTXSPY,PTXTEN,RAFFIN,RAFIND,RAFISA,RAFRES,ROYAL BAFOKENG PLATINUM,RAUBEX GROUP LTD,RCL Foods Limited,Redefine Properties Ltd,Reinet Inv Soc Anon,REMGRO LTD,Resilient Prop Inc Fund,Rhodes Food Group Pty Ltd,Rolfes Technology Hldgs,Reunert Ltd,RMB HOLDINGS LTD,Rand Merchant Ins Hldgs,Redefine International P,South32 Ltd,SA CORP REAL ESTATE FUND,SAPPI LTD,STANDARD BANK GROUP LTD,Stadio Holdings Ltd,Sephaku Holdings Ltd,Sibanye Gold Limited,Shoprite Holdings Ltd,Sanlam Limited,Steinhoff Int Hldgs Ltd,Santam Limited,Santova Logistics Ltd,Sasol Limited,SUPER GROUP LTD,THE SPAR GROUP LTD,Sirius Real Estate Ltd,Stor-Age Property REIT Ltd,STAN40,STANSX,STPROP,Satrix 40 Portfolio,STX500,STXDIV,STXEMG,STXFIN,STXIND,STXQUA,STXRAF,STXRES,STXSWX,STXWDM,SUN INTERNATIONAL LTD,SPUR CORPORATION LTD,Sygnia Limited,DB X-TRACKERS DJ EU ST 5,Db x-trackers MSCI Japan,DB X-TRACKERS FTSE 100,DB X-TRACKERS COL IN USA,DB X-TRACKERS COL IN WLD,Tiger Brands Ltd,Texton Property Fund Ltd,The Foschini Group Limit,Telkom SA SOC Ltd,TONGAAT HULETT LTD,TRENCOR LTD,Truworths Int Ltd,Tower Property Fund Ltd,VUKILE PROPERTY FUND LTD,Vodacom Group Ltd,Wilson Bayly Hlm-Ovc Ltd,WOOLWORTHS HOLDINGS LTD,WESCOAL HOLDINGS LTD,Zeder Inv Ltd".split(",");
+    private final static String[] VERIFICATION_TYPE = {"Face-Face Meeting","Video Call","Phone Call","Documentation","Trusted third party","Other"};
     private final static Random random = new Random();
     private final static Function<String[], String> selectItemRandomly = (arr) -> arr[random.nextInt(arr.length)];
 
@@ -71,14 +72,21 @@ public class DataGenerator {
                 runningDate = runningDate.plusYears(1);
                 education.setGraduationDate(runningDate);
 
-                Verification verification = new Verification();
-                verification.setVerified(random.nextBoolean());
+                Verification verification = generateVerification();
                 education.setVerification(verification);
                 educationList.add(education);
             }
         }
 
         return educationList;
+    }
+
+    public static Verification generateVerification() {
+        Verification verification = new Verification();
+        verification.setVerified(random.nextBoolean());
+        if (verification.getVerified())
+            verification.setVerificationMethod(selectItemRandomly.apply(VERIFICATION_TYPE));
+        return verification;
     }
 
     public static List<Company> generateCompanyDetails(Candidate candidate) {
@@ -131,5 +139,49 @@ public class DataGenerator {
                         1000 + random.nextInt(8999)));
 
         return contactDetails;
+    }
+
+    public static List<Reference> generateReferences(Candidate candidate) {
+        List<Reference> references = new ArrayList<>();
+
+        candidate.getEducation().stream().forEach(ithCertification-> {
+            if (random.nextBoolean()) {
+                Reference reference = new Reference();
+
+                Person person = new Person();
+                person.setName(selectItemRandomly.apply(NAMES));
+                person.setMiddleName(selectItemRandomly.apply(NAMES));
+                person.setSurname(selectItemRandomly.apply(SURNAMES));
+                person.setGender(selectItemRandomly.apply(GENDER));
+                person.setBirthDate(LocalDate.now().minusYears(18+ random.nextInt(50)));
+                person.setCurrentContactDetails(generateContactDetails(person));
+                reference.setReference(person);
+                Verification verification = generateVerification();
+                reference.setVerification(verification);
+                reference.setDescription(ithCertification.getInstitutionName());
+                references.add(reference);
+            }
+        });
+
+        candidate.getWorkHistory().stream().forEach(ithCompany-> {
+            if (random.nextBoolean()) {
+                Reference reference = new Reference();
+
+                Person person = new Person();
+                person.setName(selectItemRandomly.apply(NAMES));
+                person.setMiddleName(selectItemRandomly.apply(NAMES));
+                person.setSurname(selectItemRandomly.apply(SURNAMES));
+                person.setGender(selectItemRandomly.apply(GENDER));
+                person.setBirthDate(LocalDate.now().minusYears(18+ random.nextInt(50)));
+                person.setCurrentContactDetails(generateContactDetails(person));
+                reference.setReference(person);
+                Verification verification = generateVerification();
+                reference.setVerification(verification);
+                reference.setDescription(ithCompany.getName());
+                references.add(reference);
+            }
+        });
+
+        return references;
     }
 }

@@ -18,6 +18,9 @@ public class Candidate {
     private Person personalDetails;
     @OneToMany
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    private List<Reference> references;
+    @OneToMany
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<Company> workHistory;
     @OneToMany
     @Cascade(org.hibernate.annotations.CascadeType.ALL)

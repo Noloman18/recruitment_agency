@@ -43,6 +43,7 @@ public class DemoApplication implements CommandLineRunner {
             candidate.setEducation(DataGenerator.generateEducation(person));
             candidate.setLastModificationDate(DataGenerator.randomDate(ChronoUnit.DAYS,30));
             candidate.setWorkHistory(DataGenerator.generateCompanyDetails(candidate));
+            candidate.setReferences(DataGenerator.generateReferences(candidate));
             candidateRespository.save(candidate);
             log.info("Finished saving candidate: " + person.toString());
         });
